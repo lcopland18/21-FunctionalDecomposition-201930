@@ -1,8 +1,3 @@
-"""
-Make separate display function to show dashes call list (fix check function)
-Min length of mystery word
-Finish hangman
-"""
 
 """
 Hangman.
@@ -18,7 +13,11 @@ def main():
     # guess()
     # test_check()
     #test_guess_check()
+
     loop()
+
+
+
 def random_word():
     with open('words.txt') as f:
         f.readline()
@@ -28,6 +27,15 @@ def random_word():
         item = words[r]
         return item
 
+def min_length():
+    length = int(input('Choose the minimum length of the mystery word.'))
+    word = random_word()
+    while len(word) < length:
+       word = random_word()
+
+    return word
+
+
 def test_random_word():
     word = random_word()
     print(word)
@@ -36,20 +44,22 @@ def guess():
     letter = str(input('Guess Letter Here: '))
     return letter
 
-def check(word, guess):
-    dashes = []
-    for k in range(len(word)):
-        dashes.append('-')
-    print(dashes)
-
+def check(word, guess,dashes):
+    variable = False
     for k in range(len(word)):
         if word[k] == guess:
-            print('Your guess was correct')
             dashes[k] = word[k]
-            print(dashes)
-            return 0
+            variable = True
+
+    if variable:
+        print('Your guess was correct')
+        print(dashes)
+
+        return 0
+
     print('Your guess was incorrect')
     print(dashes)
+
 
     return 1
 
@@ -75,31 +85,42 @@ def lives():
 
 def reset():
     print('Play again?')
-    response = str(input('y/n'))
+    response = str(input('Type y or n'))
     if response == 'y':
-        hangman()
-    if response =='n':
+        loop()
+    else:
         print('Thanks for playing hangman')
-        print('Did this end?')
-
+        exit(0)
 
 def loop():
+    print()
+    print('You set the difficulty of the game by setting the number of unsuccessful choices you can make before you lose the game. The traditional form of hangman set this to 5.')
     life = lives()
     count = 0
-    word = random_word()
+    print()
+    print('I will choose a random secret word from a dictionary. You set the minimum length of that word.')
+    word = min_length()
     correct = []
     incorrect = []
+    dashes = []
+
+    print(word) #REMOVE LATER
+
+    for k in range(len(word)):
+        dashes.append('-')
 
     while count < life:
         letter = guess()
-        returned = int(check(word, letter))
+        returned = int(check(word, letter,dashes))
 
         if returned == 0:
             correct.append(letter)
+            print("Number of incorrect guesses left:",life-count)
 
         else:
             incorrect.append(letter)
             count += 1
+            print("Number of incorrect guesses left:",life-count)
 
         print("Correct guesses",correct, "Incorrect Guesses", incorrect)
 
@@ -110,13 +131,6 @@ def loop():
         elif life == len(incorrect):
             print('You lose')
             reset()
-
-def hangman():
-    print('I will choose a random secret word from a dictionary. You set the minimum length of that word.')
-    print()
-    print('You set the difficulty of the game by setting the number of unsuccessful choices you can make before you lose the game. The traditional form of hangman set this to 5.')
-    min_length()
-    loop()
 
 
 main()
