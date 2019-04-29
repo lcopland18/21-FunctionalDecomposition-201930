@@ -85,7 +85,7 @@ def lives():
 
 def reset():
     print('Play again?')
-    response = str(input('Type y or n'))
+    response = str(input('Type y or n:'))
     if response == 'y':
         loop()
     else:
