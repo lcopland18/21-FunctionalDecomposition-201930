@@ -104,7 +104,7 @@ def loop():
     incorrect = []
     dashes = []
 
-    print(word) #REMOVE LATER
+    #print(word) #Used to check word
 
     for k in range(len(word)):
         dashes.append('-')
@@ -122,7 +122,8 @@ def loop():
             count += 1
             print("Number of incorrect guesses left:",life-count)
 
-        print("Correct guesses",correct, "Incorrect Guesses", incorrect)
+        print("Correct guesses",correct)
+        print("Incorrect Guesses", incorrect)
 
         if len(correct) == len(word):
             print('You Win!')
